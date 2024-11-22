@@ -1,0 +1,46 @@
+<?php
+// Include necessary files
+include('session.php');
+include('dbconn.php');
+
+// Retrieve registered members from the database
+$query = "SELECT * FROM event_registrations";
+$result = mysqli_query($conn, $query);
+
+// Set content type to PDF
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="event_registrations.pdf"');
+
+// Include necessary libraries for PDF generation
+require('fpdf/fpdf.php');
+
+// Create a new PDF instance
+$pdf = new FPDF();
+$pdf->AddPage();
+
+// Set font
+$pdf->SetFont('Arial', '', 12);
+
+// Add a title
+$pdf->Cell(0, 10, 'Registered Members for Event', 0, 1, 'C');
+$pdf->Ln(10);
+
+// Add table headers
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->Cell(50, 10, 'Name', 1, 0, 'C');
+$pdf->Cell(50, 10, 'Phone Number', 1, 0, 'C');
+$pdf->Cell(40, 10, 'Paid', 1, 1, 'C');
+
+// Set font for data
+$pdf->SetFont('Arial', '', 12);
+
+// Add data from the database
+while ($row = mysqli_fetch_assoc($result)) {
+    $pdf->Cell(50, 10, $row['Name'], 1, 0, 'C');
+    $pdf->Cell(50, 10, $row['Phone'], 1, 0, 'C');
+    $pdf->Cell(40, 10, $row['Paid'], 1, 1, 'C');
+}
+
+// Output the PDF
+$pdf->Output();
+?>

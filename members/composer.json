@@ -1,0 +1,5 @@
+{
+    "require": {
+        "kabangi/mpesa": "^3.0"
+    }
+}

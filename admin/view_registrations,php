@@ -1,0 +1,61 @@
+<?php
+// Include necessary files
+include('header.php');
+include('session.php');
+include('dbconn.php');
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Event Registrations</title>
+</head>
+<body>
+    <?php include('navbar.php'); ?>
+    <div class="container-fluid">
+        <div class="row-fluid">
+            <?php include('sidebar.php'); ?>
+        
+            <div class="span9" id="content">
+                <div class="row-fluid">
+                    <div class="block">
+                        <div class="block-header">
+                            <h2 class="block-title">Event Registrations</h2>
+                        </div>
+                        <div class="block-content">
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Phone Number</th>
+                                            <th>Paid</th>
+                                            <th>Event ID</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Retrieve event registrations from the database
+                                        $registrations_query = mysqli_query($conn, "SELECT * FROM event_registrations") or die(mysqli_error($conn));
+                                        while($row = mysqli_fetch_assoc($registrations_query)){
+                                            echo "<tr>";
+                                            echo "<td>".(isset($row['Name']) ? $row['Name'] : '')."</td>";
+                                            echo "<td>".(isset($row['Phone']) ? $row['Phone'] : '')."</td>";
+                                            echo "<td>".(isset($row['Paid']) ? $row['Paid'] : '')."</td>";
+                                            echo "<td>".(isset($row['event_id']) ? $row['event_id'] : '')."</td>";
+                                            echo "</tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php include('footer.php'); ?>
+    <?php include('script.php'); ?>
+</body>
+</html>
